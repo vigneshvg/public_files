@@ -1,0 +1,31 @@
+<html>
+  <body>
+    <span id="result"></span>
+    <script>
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext("2d");
+      const image = document.createElement('img');
+      image.src = "data:image/avif;base64,AAAALGZ0eXBhdmlzAAAAAGF2aWZhdmlzbXNmMWlzbzhtaWYxbWlhZk1BMUEAAADybWV0YQAAAAAAAAAoaGRscgAAAAAAAAAAcGljdAAAAAAAAAAAAAAAAGxpYmF2aWYAAAAADnBpdG0AAAAAAAEAAAAeaWxvYwAAAABEAAABAAEAAAABAAAEHQAAACIAAAAoaWluZgAAAAAAAQAAABppbmZlAgAAAAABAABhdjAxQ29sb3IAAAAAamlwcnAAAABLaXBjbwAAABRpc3BlAAAAAAAAAAQAAAAEAAAAEHBpeGkAAAAAAwgICAAAAAxhdjFDgSAAAAAAABNjb2xybmNseAABAA0AAIAAAAAXaXBtYQAAAAAAAAABAAEEAQKDBAAAAtFtb292AAAAeG12aGQBAAAAAAAAAOJ9pMMAAAAA4n2kwwAAAB7//////////wABAAABAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAACUXRyYWsAAABodGtoZAEAAAEAAAAA4n2kwwAAAADifaTDAAAAAQAAAAD//////////wAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAABAAAAAQAAAAAACxlZHRzAAAAJGVsc3QBAAABAAAAAQAAAAAAAAACAAAAAAAAAAAAAQAAAAABtW1kaWEAAAAsbWRoZAEAAAAAAAAA4n2kwwAAAADifaTDAAAAHgAAAAAAAAACVcQAAAAAAChoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAbGliYXZpZgAAAAFZbWluZgAAABR2bWhkAAAAAQAAAAAAAAAAAAAAJGRpbmYAAAAcZHJlZgAAAAAAAAABAAAADHVybCAAAAABAAABGXN0YmwAAACVc3RzZAAAAAAAAAABAAAAhWF2MDEAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAABAAEAEgAAABIAAAAAAAAAAEKQU9NIENvZGluZwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY//8AAAAMYXYxQ4EgAAAAAAATY29scm5jbHgAAQANAACAAAAAEGNjc3QAAAAAfAAAAAAAABhzdHRzAAAAAAAAAAEAAAACAAAAAQAAABxzdHNjAAAAAAAAAAEAAAABAAAAAgAAAAEAAAAcc3RzegAAAAAAAAAAAAAAAgAAACYAAAAiAAAAFHN0Y28AAAAAAAAAAQAAA/cAAAAYc3RzcwAAAAAAAAACAAAAAQAAAAIAAABQbWRhdBIACgwgAAAAj5tfNAQ0AIAyFBAAgAAAD/o/WnQMepGD3cp7NiswEgAKDCAAAACPm180BDQAgDIQEACAAEbd02RoqhKMRf9DwA==";
+
+      image.addEventListener("load", (e) => {
+        context.drawImage(image, 0, 0);
+        const imageData = context.getImageData(0, 0, 1, 1);
+        const r = imageData.data[0];
+        const g = imageData.data[1];
+        const b = imageData.data[2];
+        // If browser supports animated AVIF, the pixel will be more red. Otherwise the pixel will be more green.
+        const animatedAvifSupported = (r > g) && (r > b);
+        setResult(true, animatedAvifSupported);
+      });
+
+      image.addEventListener("error", (e) => {
+        setResult(false, false);
+      });
+
+      function setResult(avifSupported, animatedAvifSupported) {
+        document.getElementById("result").innerHTML = "avifSupported: " + avifSupported + " animatedAvifSupported: " + animatedAvifSupported;
+      }
+
+    </script>
+  </body>
+</html>
